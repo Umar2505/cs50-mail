@@ -1,0 +1,21 @@
+body {
+    background-color: #e7edf8;
+}
+
+textarea {
+    min-height: 400px;
+}
+
+.col {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border: 1px solid grey;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.col:hover {
+    cursor: pointer;
+}
