@@ -6,6 +6,15 @@ textarea {
     min-height: 400px;
 }
 
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 15%;
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
+
 .col {
     display: flex;
     justify-content: space-between;

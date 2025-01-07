@@ -16,7 +16,26 @@
         <div id="emails"></div>
     </div>
 
-    <div id="email"></div>
+    <div id="email">
+        <div class="card">
+            <b>
+                <div class="card-header" id="email-sender">
+                </div>
+                <div class="card-header" id="email-subject">
+                </div>
+            </b>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p id="email-body"></p>
+                <footer class="blockquote-footer" id="email-timestamp"></footer>
+              </blockquote>
+            </div>
+            <div class="row">
+                <button class="btn btn-sm btn-outline-primary" id="reply">Reply</button>
+                <button class="btn btn-sm btn-outline-primary" id="archive" data-id="0">Archive</button>
+            </div>
+        </div>
+    </div>
 
     <div id="compose-view">
         <h3>New Email</h3>

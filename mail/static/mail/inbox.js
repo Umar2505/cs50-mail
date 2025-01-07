@@ -6,14 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
   document.querySelector('#compose-form').addEventListener('submit', send_email);
-  document.querySelector('.col').addEventListener('click', (event) => email_id(event.target))
+  document.querySelector('#archive').addEventListener('click',(event) => archive_email(event.target));
 
   // By default, load the inbox
   load_mailbox('inbox');
 });
 
 function compose_email() {
-
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#email').style.display = 'none';
@@ -55,7 +54,6 @@ function send_email(event) {
 }
 
 function load_mailbox(mailbox) {
-  
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#emails').innerHTML = "";
@@ -73,8 +71,11 @@ function load_mailbox(mailbox) {
       const element = document.createElement('div');
       element.classList.add('col');
       element.innerHTML = `<b>${i["recipients"]}</b><b>${i["subject"]}</b><b>${i["timestamp"]}</b>`;
-      element.setAttribute('data-id', i['id'])
+      element.dataset.id = i["id"];
       document.querySelector('#emails').append(element);
+      document.querySelectorAll('.col').forEach(element => {
+        element.addEventListener('click', (event) => email_id(event.currentTarget));
+      });
     }
   });
 }
@@ -87,6 +88,28 @@ function email_id(el) {
   fetch(`/emails/${el.dataset.id}`)
   .then(response => response.json())
   .then(email => {
-    
+    document.querySelector('#email-sender').innerHTML = "From: " + email['sender'];
+    document.querySelector('#email-subject').innerHTML = "Subject: " + email['subject'];
+    document.querySelector('#email-body').innerHTML = email['body'];
+    document.querySelector('#email-timestamp').innerHTML = email['timestamp'];
+    document.querySelector('#archive').dataset.id = el.dataset.id
+    if (email['archived']) {
+      document.querySelector('#archive').innerHTML = "Unarchive";
+    }else {
+      document.querySelector('#archive').innerHTML = "Archive";
+    }
   });
+}
+
+function archive_email(element) {
+  fetch(`/emails/${element.dataset.id}`)
+  .then(response => response.json())
+  .then(email => {
+    fetch(`/emails/${element.dataset.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        archived: !email['archived']
+      })
+    })
+  }).then(window.location.reload())
 }
